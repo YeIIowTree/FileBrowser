@@ -1,0 +1,31 @@
+goal: create a terminal file browser that can delete, make, move, list, and copy files, as well as check whether the user has permissions to do so.
+
+Start FileBrowser
+
+get user's name to start the program in the home directory
+
+start program in the user's home directory
+while true
+	get the user's input
+		case remove
+			validate that file is not a folder as well as permissions
+			and attempt to delete file in question 
+		case make
+			validate permissions and attempt to create file unless input ends with
+         /, then create a directory instead
+		
+		case navigate (directory)
+			validate that directory is valid and move the working directory to it	
+		case move (file) (directory)
+			validate permissions and copy said file or folder to said directory and
+         delete the old version
+		case copy (file) (directory)
+			validate permissions and copy said file or folder to said directory
+      case exit
+         break case statement and exit the program
+      case list
+         list all files in current working directory
+      case list (directory)
+         list all files in specified directory
+      case help
+         list all commands you can use
