@@ -1,7 +1,3 @@
-// Goal: To make a terminal based file browser 
-// in java that can do basic operations
-// Date: 3/6/24
-
 import java.io.File; 
 import java.io.IOException;
 import java.util.Scanner;
@@ -31,10 +27,13 @@ public class FileBrowser
       
       // Variable used to collect input
       String input;
-      // Variable used to hold files when listing them
+      
+      // Variable used to exit the main loop
+      boolean running = true;
+      
       
       // Main loop of the program, 
-      while (true)
+      while (running)
       {
          // Displays the working directory for ease of viewing
          System.out.print("Directory: " + workingDirectory + ": ");
@@ -54,6 +53,7 @@ public class FileBrowser
          {
             case "list":
                
+               // Verifies that command has 1 or 2 arguments before executing
                switch (operation.length)
                {
                   case 1:
@@ -66,37 +66,78 @@ public class FileBrowser
                      
                      // Validates that the directory in the second index exists, if it
                      // exists files will be listed
-                     if (currentDirectory.exists() )
+                     if (currentDirectory.exists() && currentDirectory.canRead() )
                      {
                         listDirectory(currentDirectory);
                      }
                      else
                      {
-                        System.out.println("Cannot list files, directory does not exist.");
+                        System.out.println("Cannot list files, directory does not exist or is not readable.");
                      }
                      break; 
                   default:
                      // Displays this error in the case that the list command is given with a
                      // third index
-                     System.out.println("list command is not given in the form list, or list <directory>");
-                  
+                     System.out.println("List command is not given in the form: list or list <directory>");
                }
-               
-         }
-          
-      }
+               break;      
+            
+            case "navigate":
+               // Verifies that input has the proper number of arguments, if not then give an error
+               if (operation.length == 2)
+               {
+                  // Assigns the directory given to the currentDirectory variable
+                  currentDirectory = new File(operation[1]);
+                  
+                  // If this directory is valid, and you have read access, then it
+                  // is made the current directory. If not, give an error.
+                  if (currentDirectory.exists() && currentDirectory.canRead() )
+                  {
+                     workingDirectory = currentDirectory;
+                  }     
+                  else
+                  {
+                     System.out.println("Failed to navigate to the specified directory. Directory does not exist or can not be read.");
+                  }
+               }
+               else
+               {
+                  System.out.println("Navigate command is not given in the form: navigate <directory>");
+               }
+               break;
+            
+            case "make": 
+            
+             
+            
+            case "copy":
+            
+            case "move":
+            
+            case "remove": 
+            
+            case "help":
+            
+            case "exit":
+               running = false;
+               break;
+         }     
+      }       
    }
+
    public static String[] splitInput(String input, String[] operation)
    {
       // Converts the user's input from a String to an array in the format of [operator, filename, directory]
       operation = input.trim().split(" ", 3);
-      return operation;
-      
-      
+      return operation;      
    }
+
    public static void listDirectory(File Directory)
    {
+      // Gets the list of a directory's files
       String[] files = Directory.list();
+      
+      // Prints out each file in the list
       for (int i = 0; i < files.length; i++) 
       { 
          System.out.println(files[i]); 
