@@ -23,7 +23,10 @@ public class FileBrowser
       {
          workingDirectory = new File("/");
       }
+      
+      // These are used as temporary variables to make program functions easier to use
       File currentDirectory;
+      File currentFile;
       
       // Variable used to collect input
       String input;
@@ -107,7 +110,32 @@ public class FileBrowser
                break;
             
             case "make": 
+            // Verifies that input is given with 2 arguments
+            if (operation.length == 2)
+            {
+            currentFile = new File(workingDirectory, operation[1]);
             
+               try
+               {
+                  if ( operation[1].contains("/") )
+                  {
+                     currentFile.mkdirs();
+                  }
+                  else
+                  {
+                  currentFile.createNewFile();
+                  }  
+               }
+               catch(IOException e)
+               {
+                  System.out.println("Failed to create file");
+               }
+            }
+            else
+            {
+               System.out.println("Make command is not given in the form: make <filename>");
+            }
+            break;
              
             
             case "copy":
