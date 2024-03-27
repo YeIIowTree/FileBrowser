@@ -143,40 +143,40 @@ public class FileBrowser
             
             case "copy":
                if (operation.length == 3) {
-               // Takes input into file variables so that file methods may be used on the input
-               currentFile = new File(workingDirectory, operation[1]);
-               currentDirectory = new File(operation[2]);
+                  // Takes input into file variables so that file methods may be used on the input
+                  currentFile = new File(workingDirectory, operation[1]);
+                  currentDirectory = new File(operation[2]);
 
-               // Verifies that the destination directory exists and that you can write to it
-               if (currentDirectory.exists() && currentDirectory.canWrite()) {
-               // Verifies that the source file exists and can be read
-               if (currentFile.exists() && currentFile.canRead()) {
-                  try {
-                     // Resolving destination path to include the destination directory and source file name
-                     File destinationFile = new File(currentDirectory, currentFile.getName());
-                     Files.copy(currentFile.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                  // Verifies that the destination directory exists and that you can write to it
+                  if (currentDirectory.exists() && currentDirectory.canWrite()) {
+                     // Verifies that the source file exists and can be read
+                     if (currentFile.exists() && currentFile.canRead()) {
+                        try {
+                           // Resolving destination path to include the destination directory and source file name
+                           File destinationFile = new File(currentDirectory, currentFile.getName());
+                           Files.copy(currentFile.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
                      
+                        } 
+                        catch (IOException e) 
+                        {
+                        e.printStackTrace();
+                        }
+                     }  
+                     else 
+                     {
+                        System.out.println("Source file does not exist, is not readable, or is a directory.");
+                     }
                   } 
-                  catch (IOException e) 
+                  else 
                   {
-                     e.printStackTrace();
+                     System.out.println("Destination directory does not exist or is not writable.");
                   }
-            } 
-            else 
-            {
-                System.out.println("Source file does not exist, is not readable, or is a directory.");
-            }
-        } 
-        else 
-        {
-            System.out.println("Destination directory does not exist or is not writable.");
-        }
-    } 
-    else 
-    {
-        System.out.println("Copy command not given in the form: copy <filename> <directory>");
-    }
-    break;
+               } 
+               else 
+               {
+                  System.out.println("Copy command not given in the form: copy <filename> <directory>");
+               }
+               break;
             case "move":
             
             case "remove": 
