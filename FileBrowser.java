@@ -159,7 +159,7 @@ public class FileBrowser
                         } 
                         catch (IOException e) 
                         {
-                        e.printStackTrace();
+                        System.out.println("Could not copy file.");
                         }
                      }  
                      else 
@@ -178,9 +178,82 @@ public class FileBrowser
                }
                break;
             case "move":
-            
+               if (operation.length == 3) {
+                  // Takes input into file variables so that file methods may be used on the input
+                  currentFile = new File(workingDirectory, operation[1]);
+                  currentDirectory = new File(operation[2]);
+
+                  // Verifies that the destination directory exists and that you can write to it
+                  if (currentDirectory.exists() && currentDirectory.canWrite()) {
+                     // Verifies that the source file exists and can be read
+                     if (currentFile.exists() && currentFile.canRead() ) {
+                        try {
+                           // Resolving destination path to include the destination directory and source file name
+                           File destinationFile = new File(currentDirectory, currentFile.getName());
+                           Files.copy(currentFile.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                           if (currentFile.canWrite() )
+                           {
+                              currentFile.delete();
+                           }
+                           else
+                           {
+                              System.out.println("New file was created but old file was not deleted.");
+                           }
+                        } 
+                        catch (IOException e) 
+                        {
+                           System.out.println("Could not create new file.");
+                        }
+                     }  
+                     else 
+                     {
+                        System.out.println("Source file does not exist, is not readable, or is a directory.");
+                     }
+                  } 
+                  else 
+                  {
+                     System.out.println("Destination directory does not exist or is not writable.");
+                  }
+               } 
+               else 
+               {
+                  System.out.println("Copy command not given in the form: copy <filename> <directory>");
+               }
+               break;
             case "remove": 
-            
+               if (operation.length == 2) 
+               {
+                  // Assigns file given to a file variable for use by file methods
+                  currentFile = new File(workingDirectory, operation[1]);
+
+                  // Verifies user has write permissions
+                  try 
+                  {
+                     if (currentFile.delete()) 
+                     {
+                        System.out.println("File deleted successfully.");
+                        
+                     } 
+                     else 
+                     {
+                        System.out.println("Failed to delete the file.");
+                        System.out.println(currentFile);
+                     }
+                  }
+                  catch (SecurityException e) 
+                  {
+                     System.out.println("Cannot delete file, no write permissions.");
+                  } 
+                  catch (Exception e) 
+                  {
+                     System.out.println("An unexpected error occurred: " + e.getMessage());
+                  }
+               } 
+               else
+               {
+                  System.out.println("Remove command not given in the form: remove <filename>");
+               }
+               break;
             case "help":
             
             case "exit":
