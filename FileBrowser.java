@@ -255,7 +255,8 @@ public class FileBrowser
                }
                break;
             case "help":
-            
+               System.out.println("\nValid syntax for commands: \n list \n list <directory> \n navigate <directory> \n make <file>  \n make <directory> \n copy <filename> <directory> \n move <filename> <directory> \n remove <file> \n remove <directory> \n\n File input is accepted with just the file name, but directory input requires the absolute directory.\n");
+               break;
             case "exit":
                running = false;
                break;
